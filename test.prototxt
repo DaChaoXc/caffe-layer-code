@@ -1,0 +1,12 @@
+layer{
+type:'python'
+name:'loss'
+top:'loss'
+bottom:'ipx'
+bottom:'ipy'
+python_param{
+	module:'pyloss'
+	layer:'EuclideanLossLayer'
+}
+loss_weight:1
+}
