@@ -1,5 +1,5 @@
 layer{
-type:'python'
+type:'Python'
 name:'loss'
 top:'loss'
 bottom:'ipx'

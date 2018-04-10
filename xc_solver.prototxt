@@ -1,0 +1,16 @@
+net: "/mnt/vm_share2/caffe/examples/classify_and_regress_ped_project/xc_ped_classify_layer.prototxt"
+test_iter: 1250
+test_interval: 10000
+#test_initialization: false
+base_lr: 0.001
+lr_policy: "step"
+gamma: 0.1
+stepsize: 100000
+display: 1000
+max_iter: 600000
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 10000
+snapshot_prefix: "/mnt/vm_share2/caffe/models/pedestrain_classify/train_xc_net"
+solver_mode: CPU
+solver_type: SGD

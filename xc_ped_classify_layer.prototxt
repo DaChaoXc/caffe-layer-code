@@ -1,0 +1,34 @@
+name: "xc_ped_classify_layer"
+layer {
+	name: "Data"
+	type: "Python"
+	top: "data"
+	top: "label"
+	python_param{
+		module:"ped_data_layer"
+		layer: "pedDataLoadLayer"
+		param_str:
+			"{\'source\':\'/mnt/vm_share2/caffe/data/ped_classify_data/train_ride.txt\',\'batch_size\':128,\'mean\':128,\'crop_size\':(96,48),\'shuffle\':1}"
+	}
+	include: {
+		phase: TRAIN
+	}
+}
+
+layer {
+	name: "Data"
+	type: "Python"
+	top: "data"
+	top: "label"
+	python_param{
+		module:"ped_data_layer"
+		layer: "pedDataLoadLayer"
+		param_str:
+			"{\'source\':\'/mnt/vm_share2/caffe/data/ped_classify_data/test.txt\',\'batch_size\':128,\'mean\':128,\'crop_size\':(96,48),\'shuffle\':1}"
+	}
+	include: {
+		phase: TEST
+	}
+}
+
+
