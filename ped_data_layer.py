@@ -34,6 +34,7 @@ class pedDataLoadLayer(caffe.Layer):
 		self.mean = np.array(params['mean'])
 		self.resize_h = params['crop_size'][0]
 		self.resize_w = params['crop_size'][1]
+		#print self.mean,self.resize_h,self.resize_w
 				
 		# two tops: data and label
 		if len(top) != 2:
@@ -42,12 +43,12 @@ class pedDataLoadLayer(caffe.Layer):
 		if len(bottom) != 0:
 			raise Exception("Do not define a bottom.")
 					
-		print_info("pedDataLoadLayer", params)
+		print_info("pedDataLoadLayer", params)		
 		
-	def reshape(self, bottom, top):			
+	def reshape(self, bottom, top):
 		top[0].reshape(self.batch_size, 1, self.resize_h, self.resize_w)		
 		top[1].reshape(self.batch_size, 1) #each image label is a intger
-			
+		
 	def forward(self, bottom, top):
 		for i in range(self.batch_size):
 			# Use the batch loader to load the next image.
@@ -56,7 +57,6 @@ class pedDataLoadLayer(caffe.Layer):
 			# Add directly to the caffe data layer
 			top[0].data[i, ...] = im
 			top[1].data[i, ...] = label
-				
 	def backward(self, top, propagate_down, bottom):
 		pass
 		
@@ -94,24 +94,23 @@ class BatchLoader(object):
 		# Load an image
 		image_sample = self.imagelist[self._cur]  # Get an image   eg: xxx.jpg 0
 		im_path = "/mnt/vm_share2/caffe/data/ped_classify_data/train_ride/" + image_sample.split(' ')[0]
-		#print image_sample
 		im = np.asarray(Image.open(im_path))
+		
 		im = scipy.misc.imresize(im, self.crop_size)  # resize dafault?
 		#cv2.resize(self.data, dsize=(resize_w, resize_h), interpolation=cv2.INTER_LINEAR)
 		im = (im.astype(np.float32) - self.mean) / 128
 		im = np.expand_dims(im, axis=0)
-
+		
 		# do a simple horizontal flip as data augmentation
 		flip = np.random.choice(2) * 2 - 1 #-1/1
 		im = im[:, ::flip, :]
 
 		im = im[:, :, ::-1]  # change to BGR
 		#im = im.transpose((2, 0, 1)) #[128 96 48 1]->[128 1 96 48]
-
+		
 		# Load and prepare ground truth
 		gt_classes=image_sample.split(' ')[1]
 		
-		#label[gt_classes] = 1  # eg: [0,1,0,0,0,0,0]
 		self._cur += 1
 		return im, int(gt_classes)	
 	
