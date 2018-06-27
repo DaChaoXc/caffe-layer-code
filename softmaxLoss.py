@@ -10,7 +10,7 @@ class softmaxWithLoss(caffe.Layer):
 	bottom[0]:predict
 	bottom[1]:label
  
-  https://blog.csdn.net/zxj942405301/article/details/72723056
+  	https://blog.csdn.net/zxj942405301/article/details/72723056
 	"""
 	
 	def setup(self, bottom, top):
@@ -26,7 +26,7 @@ class softmaxWithLoss(caffe.Layer):
 
 	def forward(self, bottom, top):
   		top[0].data[0] = 0.
-      sum = 0.
+      		sum = 0.
       
   		for i in xrange(bottom[0].num):#deal with every sample
   			  sum = np.sum(np.exp(bottom[0].data[i])
@@ -37,17 +37,17 @@ class softmaxWithLoss(caffe.Layer):
   		top[0].data[...] /= bottom[0].num
    
 	def backward(self, top, propagate_down, bottom):
-      if not propagate_down[i]:
-          continue	
+      		if not propagate_down[i]:
+          		continue	
         	
-      self.diff = 0.
+      		self.diff = 0.
       
-      for i in xrange(0, bottom[0].num):
-          gt_label = int(bottom[1].data[i])
-          for j in xrange(0, bottom[0].channel):
-              if j == gt_label:
-                  self.diff[i,j] = self.prob[i,j] - 1  
-              else:
-                  self.diff[i,j] = self.prob[i,j]
+      		for i in xrange(0, bottom[0].num):
+          		gt_label = int(bottom[1].data[i])
+          		for j in xrange(0, bottom[0].channel):
+              			if j == gt_label:
+                  			self.diff[i,j] = self.prob[i,j] - 1  
+              			else:
+                  			self.diff[i,j] = self.prob[i,j]
                   
-      bottom[0].diff[...] = self.diff / bottom[0].num
+      		bottom[0].diff[...] = self.diff / bottom[0].num
