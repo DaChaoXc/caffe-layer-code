@@ -1,14 +1,12 @@
-import caffe
+import os
+import sys
+sys.path.insert(0,'/data/wczhang/open_tools/caffe-quant/python')
 import numpy as np
-
+import caffe
 class CrossEntropyLoss(caffe.layer):
 	"""
 	bottom[0]:predict
 	bottom[1]:label
-	bottom:(N x C x H x W),x∈[−∞,+∞]
-			p^=σ(x)∈[0,1],p∈[0,1]
-	top:(1 x 1 x 1 x 1)
-	σ(x)=1/(1+e^x)
 	'Y. zhang, et. al, Deep Mutual Learning (arxiv 1706.00384v1)'
 	"""
 	

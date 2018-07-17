@@ -44,27 +44,18 @@ class FocalLossLayer(caffe.Layer):
 	
     def forward(self, bottom, top):
         top[0].data[...] = 0
-        #print 'bottom[1].data',bottom[1].data
-        #print 'bottom[1].data[49]', bottom[1].data[49]
-        #print bottom[0].data
 
         for i in xrange(0, bottom[0].num):#start from 0~bottom[0].num-1s
-            #print 'i=',i
             gt_label = int(bottom[1].data[i])
-            #print 'bottom[0].data[i,0]',bottom[0].data[i,0]
-            #print 'bottom[0].data[i,1]', bottom[0].data[i,1]
             prob = self.softmax(bottom[0].data[i,1], bottom[0].data[i,0])#attention
             if gt_label == 1:
                 pt = prob#pos
-                #print 'gt_label == 1, pt=',pt
             else:
                 pt = 1 - prob#neg
-                #print 'gt_label == 0, pt=',pt
 
             self.prob[i,:] = [1 - prob, prob]
             top[0].data[...] -= self.alpha * (1 - pt)**self.gamma * np.log(pt)
 
-        #print 'self.prob',self.prob
         top[0].data[...] /= bottom[0].num
 
     def backward(self, top, propagate_down, bottom):

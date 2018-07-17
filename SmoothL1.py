@@ -1,7 +1,6 @@
 import os
 import sys
-caffe_root = ''
-sys.path.insert(0, caffe_root + '/python')
+sys.path.insert(0,'/data/wczhang/open_tools/caffe-quant/python')
 import numpy as np
 import caffe
 
