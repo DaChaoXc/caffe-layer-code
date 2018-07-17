@@ -62,7 +62,6 @@ class FocalLossLayer(caffe.Layer):
         if not propagate_down[0]:
             return
 
-        self.diff = 0.
         for i in xrange(0, bottom[0].num):
             gt_label = int(bottom[1].data[i])
             p0 = self.prob[i,0]
